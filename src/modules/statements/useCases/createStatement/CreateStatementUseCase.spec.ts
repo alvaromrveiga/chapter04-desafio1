@@ -1,16 +1,12 @@
 import { validate } from "uuid";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
+import { OperationType } from "../../entities/Statement";
 import { InMemoryStatementsRepository } from "../../repositories/in-memory/InMemoryStatementsRepository";
 import { CreateStatementError } from "./CreateStatementError";
 import { CreateStatementUseCase } from "./CreateStatementUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let createStatementUseCase: CreateStatementUseCase;
-
-enum OperationType {
-  DEPOSIT = "deposit",
-  WITHDRAW = "withdraw",
-}
 
 describe("Create Statement", () => {
   beforeEach(() => {
@@ -28,7 +24,7 @@ describe("Create Statement", () => {
       email: "user@test.com",
       password: "123",
     });
-    
+
     expect(user.id).not.toBeUndefined();
 
     const depositStatement = await createStatementUseCase.execute({
