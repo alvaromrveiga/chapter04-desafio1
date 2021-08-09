@@ -2,13 +2,11 @@ import request from "supertest";
 import { Connection } from "typeorm";
 import { app } from "../../../../app";
 import createConnection from "../../../../database/index";
-import { User } from "../../entities/User";
 import { UsersRepository } from "../../repositories/UsersRepository";
 import { AuthenticateUserUseCase } from "../authenticateUser/AuthenticateUserUseCase";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 
 let connection: Connection;
-let user: User;
 let token: string;
 
 describe("Show User Profile IntegrationTest", () => {
@@ -22,7 +20,7 @@ describe("Show User Profile IntegrationTest", () => {
       usersRepository
     );
 
-    user = await createUserUseCase.execute({
+    await createUserUseCase.execute({
       name: "User",
       email: "user@test.com",
       password: "123",
