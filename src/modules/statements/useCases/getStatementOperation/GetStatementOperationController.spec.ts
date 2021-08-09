@@ -13,7 +13,7 @@ let token: string;
 let connection: Connection;
 let statement: Statement;
 
-describe("Create Statement IntegrationTest", () => {
+describe("Get Statement Operation IntegrationTest", () => {
   beforeAll(async () => {
     connection = await createConnection();
     await connection.runMigrations();    
