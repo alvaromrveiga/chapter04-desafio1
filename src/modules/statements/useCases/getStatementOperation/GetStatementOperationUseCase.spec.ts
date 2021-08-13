@@ -29,7 +29,7 @@ describe("Get Statement Operation", () => {
     expect(user.id).not.toBeUndefined();
 
     const deposit = await inMemoryStatementsRepository.create({
-      user_id: user.id!,
+      sender_id: user.id!,
       type: OperationType.DEPOSIT,
       amount: 100,
       description: "Deposit to get operation test",
