@@ -23,7 +23,7 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(() => Statement, statement => statement.user)
+  @OneToMany(() => Statement, statement => statement.receiver)
   statement: Statement[];
 
   @CreateDateColumn()
