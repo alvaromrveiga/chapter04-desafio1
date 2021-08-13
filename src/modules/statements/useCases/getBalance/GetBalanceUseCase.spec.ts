@@ -29,14 +29,14 @@ describe("Get Balance", () => {
     expect(user.id).not.toBeUndefined();
 
     await inMemoryStatementRepository.create({
-      user_id: user.id!,
+      sender_id: user.id!,
       type: OperationType.DEPOSIT,
       amount: 1000,
       description: "Deposit to get balance test",
     });
 
     await inMemoryStatementRepository.create({
-      user_id: user.id!,
+      sender_id: user.id!,
       type: OperationType.WITHDRAW,
       amount: 100,
       description: "Withdraw to get balance test",
