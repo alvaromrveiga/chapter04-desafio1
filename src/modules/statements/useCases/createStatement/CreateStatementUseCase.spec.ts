@@ -28,7 +28,7 @@ describe("Create Statement", () => {
     expect(user.id).not.toBeUndefined();
 
     const depositStatement = await createStatementUseCase.execute({
-      user_id: user.id!,
+      sender_id: user.id!,
       type: OperationType.DEPOSIT,
       amount: 500,
       description: "Deposit description",
@@ -55,14 +55,14 @@ describe("Create Statement", () => {
     expect(user.id).not.toBeUndefined();
 
     await createStatementUseCase.execute({
-      user_id: user.id!,
+      sender_id: user.id!,
       type: OperationType.DEPOSIT,
       amount: 500,
       description: "Deposit description",
     });
 
     const withdrawStatement = await createStatementUseCase.execute({
-      user_id: user.id!,
+      sender_id: user.id!,
       type: OperationType.WITHDRAW,
       amount: 100,
       description: "Withdraw description",
@@ -82,7 +82,7 @@ describe("Create Statement", () => {
   it("Should not create a new statement for invalid user", async () => {
     expect(async () => {
       await createStatementUseCase.execute({
-        user_id: "invalid id",
+        sender_id: "invalid id",
         type: OperationType.DEPOSIT,
         amount: 500,
         description: "Deposit description",
@@ -101,7 +101,7 @@ describe("Create Statement", () => {
 
     expect(async () => {
       await createStatementUseCase.execute({
-        user_id: user.id!,
+        sender_id: user.id!,
         type: OperationType.WITHDRAW,
         amount: 50,
         description: "Withdraw description",
