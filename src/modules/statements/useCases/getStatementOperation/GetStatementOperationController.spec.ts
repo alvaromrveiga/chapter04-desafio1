@@ -43,7 +43,7 @@ describe("Get Statement Operation IntegrationTest", () => {
     token = authenticate.token;
 
     statement = await createStatementUseCase.execute({
-      user_id: user.id!,
+      sender_id: user.id!,
       type: OperationType.DEPOSIT,
       amount: 300,
       description: "Deposit test",
