@@ -32,10 +32,6 @@ export class CreateStatementUseCase {
       }
     }
 
-    if (!data.receiver_id) {
-      data.receiver_id = data.sender_id;
-    }
-
     const statementOperation = await this.statementsRepository.create(data);
 
     return statementOperation;
