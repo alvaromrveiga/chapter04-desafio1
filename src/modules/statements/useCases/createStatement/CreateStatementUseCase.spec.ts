@@ -38,7 +38,7 @@ describe("Create Statement", () => {
 
     expect(depositStatement).toMatchObject({
       id: depositStatement.id,
-      user_id: user.id,
+      sender_id: user.id,
       type: OperationType.DEPOSIT,
       amount: 500,
       description: "Deposit description",
@@ -72,7 +72,7 @@ describe("Create Statement", () => {
 
     expect(withdrawStatement).toMatchObject({
       id: withdrawStatement.id,
-      user_id: user.id,
+      sender_id: user.id,
       type: OperationType.WITHDRAW,
       amount: 100,
       description: "Withdraw description",
