@@ -22,7 +22,9 @@ export class CreateStatementUseCase {
       throw new CreateStatementError.UserNotFound();
     }
 
-    if (data.type === "withdraw") {
+    await this.ifTransfer(data);
+
+    if (data.type === "withdraw" || data.type === "transfer") {
       const { balance } = await this.statementsRepository.getUserBalance({
         user_id: data.sender_id,
       });
@@ -35,5 +37,21 @@ export class CreateStatementUseCase {
     const statementOperation = await this.statementsRepository.create(data);
 
     return statementOperation;
+  }
+
+  private async ifTransfer(data: ICreateStatementDTO) {
+    if (data.type === "transfer") {
+      if (!data.receiver_id) {
+        throw new CreateStatementError.UserNotFound();
+      }
+
+      const userReceiver = await this.usersRepository.findById(
+        data.receiver_id
+      );
+
+      if (!userReceiver) {
+        throw new CreateStatementError.UserNotFound();
+      }
+    }
   }
 }
