@@ -18,7 +18,6 @@ export class CreateStatementUseCase {
 
   async execute(data: ICreateStatementDTO) {
     const user = await this.usersRepository.findById(data.sender_id);
-    console.log(data.receiver_id);
 
     if (!user) {
       throw new CreateStatementError.UserNotFound();
@@ -47,8 +46,6 @@ export class CreateStatementUseCase {
   private async ifTransfer(data: ICreateStatementDTO) {
     if (data.type === OperationType.TRANSFER) {
       if (!data.receiver_id) {
-        console.log(1);
-
         throw new CreateStatementError.UserReceiverNotFound();
       }
 
@@ -57,8 +54,6 @@ export class CreateStatementUseCase {
       );
 
       if (!userReceiver) {
-        console.log(2);
-
         throw new CreateStatementError.UserReceiverNotFound();
       }
     }
