@@ -7,8 +7,7 @@ import { CreateStatementUseCase } from './CreateStatementUseCase';
 export class CreateStatementController {
   async execute(request: Request, response: Response) {
     const { id: sender_id } = request.user;
-    const {receiver_id} = request.params
-    const { amount, description } = request.body;
+    const { amount, description, receiver_id } = request.body;
 
     const splittedPath = request.originalUrl.split('/')
     const type = splittedPath[splittedPath.length - 1] as OperationType;
