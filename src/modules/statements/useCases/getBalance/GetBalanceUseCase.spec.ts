@@ -26,7 +26,14 @@ describe("Get Balance", () => {
       password: "123",
     });
 
+    const userTwo = await inMemoryUsersRepository.create({
+      name: "User2",
+      email: "user2@test.com",
+      password: "123",
+    });
+
     expect(user.id).not.toBeUndefined();
+    expect(userTwo.id).not.toBeUndefined();
 
     await inMemoryStatementRepository.create({
       sender_id: user.id!,
@@ -42,15 +49,29 @@ describe("Get Balance", () => {
       description: "Withdraw to get balance test",
     });
 
+    await inMemoryStatementRepository.create({
+      sender_id: user.id!,
+      receiver_id: userTwo.id,
+      type: OperationType.TRANSFER,
+      amount: 200,
+      description: "Transfer to get balance test",
+    });
+
     const balance = await getBalanceUseCase.execute({ user_id: user.id! });
 
-    expect(balance.balance).toBe(900);
-    expect(balance.statement.length).toBe(2);
+    expect(balance.balance).toBe(700);
+    expect(balance.statement.length).toBe(3);
+
+    const userTwoBalance = await getBalanceUseCase.execute({
+      user_id: userTwo.id!,
+    });
+
+    expect(userTwoBalance.balance).toBe(200);
   });
 
   it("Should not get balance if user not found", async () => {
     expect(async () => {
-      const balance = await getBalanceUseCase.execute({
+      await getBalanceUseCase.execute({
         user_id: "Does not exist",
       });
     }).rejects.toBeInstanceOf(GetBalanceError);
