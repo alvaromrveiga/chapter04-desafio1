@@ -173,4 +173,29 @@ describe("Create Statement", () => {
       })
     ).rejects.toBeInstanceOf(CreateStatementError.UserReceiverNotFound);
   });
+
+  it("Should not make a transfer to yourself", async () => {
+    const sender = await inMemoryUsersRepository.create({
+      name: "Sender user",
+      email: "sender@test.com",
+      password: "123",
+    });
+
+    await createStatementUseCase.execute({
+      sender_id: sender.id!,
+      type: OperationType.DEPOSIT,
+      amount: 500,
+      description: "Deposit description",
+    });
+
+    await expect(
+      createStatementUseCase.execute({
+        sender_id: sender.id!,
+        receiver_id: sender.id!,
+        type: OperationType.TRANSFER,
+        amount: 100,
+        description: "Transfer to yourself",
+      })
+    ).rejects.toBeInstanceOf(CreateStatementError.TransferToYourself);
+  });
 });
