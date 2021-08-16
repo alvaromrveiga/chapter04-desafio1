@@ -1,4 +1,4 @@
-import { Statement } from "../../entities/Statement";
+import { OperationType, Statement } from "../../entities/Statement";
 import { ICreateStatementDTO } from "../../useCases/createStatement/ICreateStatementDTO";
 import { IGetBalanceDTO } from "../../useCases/getBalance/IGetBalanceDTO";
 import { IGetStatementOperationDTO } from "../../useCases/getStatementOperation/IGetStatementOperationDTO";
@@ -34,11 +34,17 @@ export class InMemoryStatementsRepository implements IStatementsRepository {
     { balance: number } | { balance: number; statement: Statement[] }
   > {
     const statement = this.statements.filter(
-      (operation) => operation.sender_id === user_id
+      (operation) =>
+        operation.sender_id === user_id || operation.receiver_id === user_id
     );
 
     const balance = statement.reduce((acc, operation) => {
-      if (operation.type === "deposit") {
+      if (operation.type === OperationType.DEPOSIT) {
+        return acc + operation.amount;
+      } else if (
+        operation.type === OperationType.TRANSFER &&
+        operation.receiver_id === user_id
+      ) {
         return acc + operation.amount;
       } else {
         return acc - operation.amount;
