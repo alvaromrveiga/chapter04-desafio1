@@ -49,6 +49,10 @@ export class CreateStatementUseCase {
         throw new CreateStatementError.UserReceiverNotFound();
       }
 
+      if (data.receiver_id === data.sender_id) {
+        throw new CreateStatementError.TransferToYourself();
+      }
+
       const userReceiver = await this.usersRepository.findById(
         data.receiver_id
       );
