@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
+import { OperationType } from "../../entities/Statement";
 import { IStatementsRepository } from "../../repositories/IStatementsRepository";
 import { CreateStatementError } from "./CreateStatementError";
 import { ICreateStatementDTO } from "./ICreateStatementDTO";
@@ -17,6 +18,7 @@ export class CreateStatementUseCase {
 
   async execute(data: ICreateStatementDTO) {
     const user = await this.usersRepository.findById(data.sender_id);
+    console.log(data.receiver_id);
 
     if (!user) {
       throw new CreateStatementError.UserNotFound();
@@ -24,7 +26,10 @@ export class CreateStatementUseCase {
 
     await this.ifTransfer(data);
 
-    if (data.type === "withdraw" || data.type === "transfer") {
+    if (
+      data.type === OperationType.WITHDRAW ||
+      data.type === OperationType.TRANSFER
+    ) {
       const { balance } = await this.statementsRepository.getUserBalance({
         user_id: data.sender_id,
       });
@@ -40,8 +45,10 @@ export class CreateStatementUseCase {
   }
 
   private async ifTransfer(data: ICreateStatementDTO) {
-    if (data.type === "transfer") {
+    if (data.type === OperationType.TRANSFER) {
       if (!data.receiver_id) {
+        console.log(1);
+
         throw new CreateStatementError.UserReceiverNotFound();
       }
 
@@ -50,6 +57,8 @@ export class CreateStatementUseCase {
       );
 
       if (!userReceiver) {
+        console.log(2);
+
         throw new CreateStatementError.UserReceiverNotFound();
       }
     }
