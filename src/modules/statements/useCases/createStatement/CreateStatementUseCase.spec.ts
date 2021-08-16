@@ -171,6 +171,6 @@ describe("Create Statement", () => {
         amount: 100,
         description: "Transfer description",
       })
-    ).rejects.toBeInstanceOf(CreateStatementError.UserNotFound);
+    ).rejects.toBeInstanceOf(CreateStatementError.UserReceiverNotFound);
   });
 });
