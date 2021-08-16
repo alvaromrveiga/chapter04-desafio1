@@ -18,4 +18,10 @@ export namespace CreateStatementError {
       super("Insufficient funds", 400);
     }
   }
+
+  export class TransferToYourself extends AppError {
+    constructor() {
+      super("You can't send a transfer to yourself", 400);
+    }
+  }
 }
